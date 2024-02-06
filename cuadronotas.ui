@@ -14,8 +14,8 @@
    <string>CuadroNotas</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
      <widget class="QTableWidget" name="tableWidget">
       <row>
        <property name="text">
@@ -46,7 +46,21 @@
     </property>
     <addaction name="actionIngresar_Datos"/>
    </widget>
+   <widget class="QMenu" name="menuDatos">
+    <property name="title">
+     <string>Datos</string>
+    </property>
+    <addaction name="actionArchivos"/>
+   </widget>
+   <widget class="QMenu" name="menuAcerca_de">
+    <property name="title">
+     <string>Acerca de</string>
+    </property>
+    <addaction name="actionLinks"/>
+   </widget>
    <addaction name="menuNuevo"/>
+   <addaction name="menuDatos"/>
+   <addaction name="menuAcerca_de"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionIngresar_Datos">
@@ -55,6 +69,19 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+N</string>
+   </property>
+  </action>
+  <action name="actionArchivos">
+   <property name="text">
+    <string>Archivos</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+L</string>
+   </property>
+  </action>
+  <action name="actionLinks">
+   <property name="text">
+    <string>Links</string>
    </property>
   </action>
  </widget>

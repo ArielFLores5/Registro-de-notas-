@@ -20,6 +20,9 @@ public:
 private slots:
     void on_actionIngresar_Datos_triggered();
     void registrarEstudiante(const QString& nombres, const QString& apellidos, int nota1, int nota2);
+    void guardarEnCSV();
+    void on_actionArchivos_triggered();
+
 private:
     Ui::CuadroNotas *ui;
 };
