@@ -2,25 +2,28 @@
 #include "ui_cuadronotas.h"
 #include "ingresodatosform.h"
 
-#include <QFileDialog>
-#include <QFile>
-#include <QMessageBox>
-#include <QTextStream>
+// cuadronotas.cpp
 
 CuadroNotas::CuadroNotas(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::CuadroNotas)
+    ui(new Ui::CuadroNotas),
+    acercaDeForm(nullptr)  // Inicializa acercaDeForm como nullptr
 {
     ui->setupUi(this);
     ui->tableWidget->setColumnCount(6);
     QStringList headers = {"Nombres", "Nota 1 Parcial", "Nota 2 Parcial", "Nota Final", "Estado", "Nota Remedial Minima"};
     ui->tableWidget->setHorizontalHeaderLabels(headers);
     connect(ui->actionArchivos, &QAction::triggered, this, &CuadroNotas::guardarEnCSV);
+    connect(ui->actionCargar_Datos, &QAction::triggered, this, &CuadroNotas::cargarDesdeCSV);
+    connect(ui->actionLinks, &QAction::triggered, this, &CuadroNotas::mostrarAcercaDeForm);
+    ui->menuDatos->addAction(ui->actionCargar_Datos);
 }
+
 
 CuadroNotas::~CuadroNotas()
 {
     delete ui;
+    delete acercaDeForm;
 }
 
 void CuadroNotas::on_actionIngresar_Datos_triggered()
@@ -59,11 +62,6 @@ void CuadroNotas::registrarEstudiante(const QString& nombres, const QString& ape
 
 void CuadroNotas::guardarEnCSV()
 {
-
-}
-
-void CuadroNotas::on_actionArchivos_triggered()
-{
     QString filePath = QFileDialog::getSaveFileName(this, tr("Guardar como CSV"), QString(), tr("Archivos CSV (*.csv)"));
 
     if (filePath.isEmpty()) {
@@ -94,3 +92,60 @@ void CuadroNotas::on_actionArchivos_triggered()
 
     file.close();
 }
+void CuadroNotas::on_actionArchivos_triggered()
+{
+    //Porsia no vale
+}
+void CuadroNotas::cargarDesdeCSV()
+{
+    QString filePath = QFileDialog::getOpenFileName(this, tr("Abrir archivo CSV"), QString(), tr("Archivos CSV (*.csv)"));
+
+    if (filePath.isEmpty()) {
+        return;
+    }
+
+    QFile file(filePath);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QMessageBox::critical(this, tr("Error"), tr("No se pudo abrir el archivo para lectura."));
+        return;
+    }
+
+    QTextStream in(&file);
+    QStringList headers = in.readLine().split(",");
+    ui->tableWidget->setHorizontalHeaderLabels(headers);
+    ui->tableWidget->clearContents();
+    ui->tableWidget->setRowCount(0);
+    while (!in.atEnd()) {
+        QString line = in.readLine();
+        QStringList rowData = line.split(",");
+        int row = ui->tableWidget->rowCount();
+        ui->tableWidget->insertRow(row);
+        for (int col = 0; col < rowData.size(); ++col) {
+            ui->tableWidget->setItem(row, col, new QTableWidgetItem(rowData[col]));
+        }
+    }
+
+    file.close();
+}
+
+void CuadroNotas::on_actionCargar_Datos_triggered()
+{
+    //Porsia no vale
+}
+
+void CuadroNotas::mostrarAcercaDeForm()
+{
+    // Crea la subventana si aún no existe
+    if (!acercaDeForm) {
+        acercaDeForm = new AcercaDeForm(this);
+    }
+
+    // Muestra la subventana
+    acercaDeForm->show();
+}
+
+void CuadroNotas::on_actionLinks_triggered()
+{
+    //Porsia no vale
+}
+

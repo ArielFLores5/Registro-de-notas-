@@ -2,6 +2,7 @@
 #define INGRESODATOSFORM_H
 
 #include <QDialog>
+#include "acercadeform.h"
 
 namespace Ui {
 class IngresoDatosForm;
